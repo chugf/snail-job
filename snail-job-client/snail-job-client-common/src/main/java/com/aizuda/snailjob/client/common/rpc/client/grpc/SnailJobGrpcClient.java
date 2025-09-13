@@ -8,6 +8,7 @@ import com.aizuda.snailjob.client.common.event.SnailChannelReconnectEvent;
 import com.aizuda.snailjob.common.core.context.SnailSpringContext;
 import com.aizuda.snailjob.common.core.enums.RpcTypeEnum;
 import com.aizuda.snailjob.common.log.SnailJobLog;
+import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.grpc.*;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
@@ -16,6 +17,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
 import java.util.concurrent.*;
 
 
@@ -29,8 +31,10 @@ import java.util.concurrent.*;
 public class SnailJobGrpcClient implements Lifecycle {
     private ManagedChannel channel;
     private final SnailJobProperties snailJobProperties;
+    private final Set<ConnectivityState> STATES = Sets.newHashSet(ConnectivityState.CONNECTING);
     private static final ScheduledExecutorService SCHEDULE_EXECUTOR = Executors.newSingleThreadScheduledExecutor(
             r -> new Thread(r, "sj-client-check"));
+
     @Override
     public void start() {
         if (RpcTypeEnum.GRPC != snailJobProperties.getRpcType()) {
@@ -39,29 +43,36 @@ public class SnailJobGrpcClient implements Lifecycle {
 
         channel = connection();
         GrpcChannel.setChannel(channel);
-        SnailJobLog.LOCAL.info("grpc client started connect to server");
+        SnailJobLog.LOCAL.info("gRPC client started connect to server");
 
         // 连接检测
         SCHEDULE_EXECUTOR.scheduleAtFixedRate(() -> {
             ConnectivityState state = channel.getState(true);
             if (state == ConnectivityState.TRANSIENT_FAILURE) {
-                try {
-                    // 抛出重连事件
-                    SnailSpringContext.getContext().publishEvent(new SnailChannelReconnectEvent());
-                    channel = connection();
-                    GrpcChannel.setChannel(channel);
-                } catch (Exception e) {
-                    SnailJobLog.LOCAL.error("reconnect error ", e);
-                }
+                SnailJobLog.LOCAL.warn("gRPC channel state=TRANSIENT_FAILURE, try reconnect...");
+                reconnect();
             }
         }, 0, 10, TimeUnit.SECONDS);
 
     }
 
-    @Override
-    public void close() {
-        if (channel != null && !channel.isShutdown()) {
-            channel.shutdownNow();
+    private void reconnect() {
+        try {
+            ManagedChannel newChannel = connection();
+            GrpcChannel.setChannel(newChannel);
+            ManagedChannel oldChannel = this.channel;
+            this.channel = newChannel;
+
+            // 关闭旧连接
+            if (oldChannel != null && !oldChannel.isShutdown()) {
+                oldChannel.shutdownNow();
+            }
+
+            if (STATES.contains(newChannel.getState(false))) {
+                SnailJobLog.LOCAL.info("reconnect success");
+            }
+        } catch (Throwable e) {
+            SnailJobLog.LOCAL.error("reconnect error", e);
         }
     }
 
@@ -85,11 +96,18 @@ public class SnailJobGrpcClient implements Lifecycle {
         ThreadPoolConfig threadPool = clientRpc.getClientTp();
         serverIp = serverIp.replaceAll("%", "-");
         ThreadPoolExecutor grpcExecutor = new ThreadPoolExecutor(threadPool.getCorePoolSize(),
-            threadPool.getMaximumPoolSize(), threadPool.getKeepAliveTime(), TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(threadPool.getQueueCapacity()),
-            new ThreadFactoryBuilder().setDaemon(true).setNameFormat("snail-job-grpc-client-executor-" + serverIp + "-%d")
-                .build());
+                threadPool.getMaximumPoolSize(), threadPool.getKeepAliveTime(), TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(threadPool.getQueueCapacity()),
+                new ThreadFactoryBuilder().setDaemon(true).setNameFormat("snail-job-grpc-client-executor-" + serverIp + "-%d")
+                        .build());
         grpcExecutor.allowCoreThreadTimeOut(true);
         return grpcExecutor;
+    }
+
+    @Override
+    public void close() {
+        if (channel != null && !channel.isShutdown()) {
+            channel.shutdownNow();
+        }
     }
 }

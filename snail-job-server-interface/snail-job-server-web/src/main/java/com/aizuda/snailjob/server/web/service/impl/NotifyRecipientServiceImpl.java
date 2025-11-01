@@ -23,7 +23,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -138,7 +137,7 @@ public class NotifyRecipientServiceImpl implements NotifyRecipientService {
         // 这里就直接放NotifyRecipient为了后面若加字段不需要再这里在调整了
         private final NotifyRecipient recipient;
 
-        public NotifyRecipientPartitionTask(@NotNull NotifyRecipient recipient) {
+        public NotifyRecipientPartitionTask(NotifyRecipient recipient) {
             this.recipient = recipient;
             setId(recipient.getId());
         }

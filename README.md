@@ -43,7 +43,7 @@
 </a>
 
 ## 相关链接
-
+- [携程分布式重试落地实践|别让重试成为系统灾难，携程微服务重试治理之道](https://mp.weixin.qq.com/s/lR2UFOSUkKa3HEcpyCovCQ)
 - [字节跳动: 如何优雅地重试](https://juejin.cn/post/6914091859463634951)
 - [这款分布式重试组件,治好了我的重试强迫症！](https://juejin.cn/post/7249607108043145274)
 - [系统简介](https://snailjob.opensnail.com/docs/introduce/preface.html)

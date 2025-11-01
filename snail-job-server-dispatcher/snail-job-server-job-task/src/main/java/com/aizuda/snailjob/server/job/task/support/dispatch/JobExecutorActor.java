@@ -42,7 +42,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -215,7 +214,6 @@ public class JobExecutorActor extends AbstractActor {
 
     }
 
-    @NotNull
     private static JobExecutorContext buildJobExecutorContext(TaskExecuteDTO taskExecute, Job job, List<JobTask> taskList,
                                                               final WorkflowTaskBatch workflowTaskBatch) {
         JobExecutorContext context = JobTaskConverter.INSTANCE.toJobExecutorContext(job);

@@ -37,7 +37,6 @@ import com.google.common.collect.Sets;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -344,7 +343,7 @@ public class SceneConfigServiceImpl implements SceneConfigService {
         // 这里就直接放RetrySceneConfig为了后面若加字段不需要再这里在调整了
         private final RetrySceneConfig config;
 
-        public SceneConfigPartitionTask(@NotNull RetrySceneConfig config) {
+        public SceneConfigPartitionTask(RetrySceneConfig config) {
             this.config = config;
             setId(config.getId());
         }

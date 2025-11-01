@@ -47,7 +47,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -353,7 +352,7 @@ public class WorkflowWebServiceImpl extends AbstractWorkflowService implements W
 
         private final WorkflowDetailResponseWebVO responseVO;
 
-        public WorkflowPartitionTask(@NotNull WorkflowDetailResponseWebVO responseVO) {
+        public WorkflowPartitionTask(WorkflowDetailResponseWebVO responseVO) {
             this.responseVO = responseVO;
             setId(responseVO.getId());
         }

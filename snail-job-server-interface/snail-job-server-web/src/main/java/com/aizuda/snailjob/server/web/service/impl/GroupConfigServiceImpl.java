@@ -36,7 +36,6 @@ import com.google.common.collect.Lists;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -401,7 +400,7 @@ public class GroupConfigServiceImpl implements GroupConfigService {
         // 这里就直接放GroupConfig为了后面若加字段不需要再这里在调整了
         private final GroupConfig config;
 
-        public GroupConfigPartitionTask(@NotNull GroupConfig config) {
+        public GroupConfigPartitionTask(GroupConfig config) {
             this.config = config;
             setId(config.getId());
         }

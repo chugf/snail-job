@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.10</version>
+        <version>3.5.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -20,29 +20,28 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <revision>1.8.0</revision>
+        <revision>1.8.1</revision>
         <skipTests>true</skipTests>
 
-        <hutool.version>5.8.32</hutool.version>
+        <hutool.version>5.8.40</hutool.version>
         <mybatis-spring.version>3.0.3</mybatis-spring.version>
-        <mybatis-plus.version>3.5.9</mybatis-plus.version>
+        <mybatis-plus.version>3.5.14</mybatis-plus.version>
         <guava.version>33.3.0-jre</guava.version>
         <guava-retrying.version>2.0.0</guava-retrying.version>
-        <mapstruct.version>1.5.3.Final</mapstruct.version>
-        <pekko.version>1.2.0-M1</pekko.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <pekko.version>1.2.1</pekko.version>
         <scala.version>2.13.9</scala.version>
-        <java-jwt.version>4.4.0</java-jwt.version>
+        <java-jwt.version>4.5.0</java-jwt.version>
         <perf4j.version>0.9.16</perf4j.version>
-        <aviator.version>5.3.3</aviator.version>
-        <hessian.version>4.0.66</hessian.version>
+        <aviator.version>5.4.3</aviator.version>
         <QLExpress.version>3.3.4</QLExpress.version>
-        <fory.version>0.12.1</fory.version>
-        <zstd.version>1.5.5-5</zstd.version>
+        <fory.version>0.13.0</fory.version>
+        <zstd.version>1.5.7-6</zstd.version>
 
         <!--    grpc & protobuf    -->
-        <grpc-java.version>1.71.0</grpc-java.version>
-        <proto-google-common-protos.version>2.54.1</proto-google-common-protos.version>
-        <protobuf-java.version>3.25.6</protobuf-java.version>
+        <grpc-java.version>1.76.0</grpc-java.version>
+        <proto-google-common-protos.version>2.62.0</proto-google-common-protos.version>
+        <protobuf-java.version>4.33.0</protobuf-java.version>
 
         <!--   non-springboot database connectors  -->
         <mariadb.version>3.1.4</mariadb.version>
@@ -56,7 +55,7 @@
         <!--    plugins    -->
         <central-publishing-maven-plugin.version>0.5.0</central-publishing-maven-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-        <flatten-maven-plugin.version>1.1.0</flatten-maven-plugin.version>
+        <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -207,11 +206,6 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.caucho</groupId>
-                <artifactId>hessian</artifactId>
-                <version>${hessian.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.googlecode.aviator</groupId>

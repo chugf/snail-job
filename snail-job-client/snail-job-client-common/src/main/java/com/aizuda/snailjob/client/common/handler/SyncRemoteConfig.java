@@ -44,7 +44,7 @@ public class SyncRemoteConfig implements Lifecycle {
             try {
                 CLIENT.syncRemoteConfig();
             } catch (Exception e) {
-                SnailJobLog.LOCAL.error("Notification configuration failed", e);
+                SnailJobLog.LOCAL.warn("Notification configuration failed", e);
             }
         }, 0, 1, TimeUnit.MINUTES);
     }

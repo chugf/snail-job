@@ -64,38 +64,6 @@ public class JobWebBatchServiceImpl extends AbstractJobBatchService implements J
         return new PageResult<>(pageDTO, batchResponseVOList);
     }
 
-//    @Override
-//    public JobBatchResponseVO getJobBatchDetail(final Long id) {
-//        JobTaskBatch jobTaskBatch = jobTaskBatchMapper.selectById(id);
-//        if (Objects.isNull(jobTaskBatch)) {
-//            return null;
-//        }
-//
-//        Job job = jobMapper.selectById(jobTaskBatch.getJobId());
-//        JobBatchResponseVO jobBatchResponseVO = JobBatchResponseVOConverter.INSTANCE.convert(jobTaskBatch, job);
-//
-//        if (jobTaskBatch.getSystemTaskType().equals(SyetemTaskTypeEnum.WORKFLOW.getType())) {
-//            WorkflowNode workflowNode = workflowNodeMapper.selectById(jobTaskBatch.getWorkflowNodeId());
-//            jobBatchResponseVO.setNodeName(workflowNode.getNodeName());
-//
-//            // 回调节点
-//            if (SystemConstants.CALLBACK_JOB_ID.equals(jobTaskBatch.getJobId())) {
-//                jobBatchResponseVO.setCallback(JsonUtil.parseObject(workflowNode.getNodeInfo(), CallbackConfig.class));
-//                jobBatchResponseVO.setExecutionAt(jobTaskBatch.getCreateDt());
-//                return jobBatchResponseVO;
-//            }
-//
-//            // 条件节点
-//            if (SystemConstants.DECISION_JOB_ID.equals(jobTaskBatch.getJobId())) {
-//                jobBatchResponseVO.setDecision(JsonUtil.parseObject(workflowNode.getNodeInfo(), DecisionConfig.class));
-//                jobBatchResponseVO.setExecutionAt(jobTaskBatch.getCreateDt());
-//                return jobBatchResponseVO;
-//            }
-//        }
-//
-//        return jobBatchResponseVO;
-//    }
-
     @Override
     public boolean stop(Long taskBatchId) {
         return jobHandler.stop(taskBatchId);

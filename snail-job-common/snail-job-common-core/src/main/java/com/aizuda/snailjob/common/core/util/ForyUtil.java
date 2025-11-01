@@ -45,7 +45,7 @@ public class ForyUtil {
                     .withCompatibleMode(CompatibleMode.COMPATIBLE)
                     .withClassLoader(classLoader)
                     .build();
-            f.getClassResolver().setClassChecker(checker);
+            f.getClassResolver().setTypeChecker(checker);
             checker.addListener(f.getClassResolver());
             return f;
         }, Runtime.getRuntime().availableProcessors(),
